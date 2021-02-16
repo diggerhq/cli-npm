@@ -1,6 +1,6 @@
 {
   "name": "diggercli",
-  "version": "0.1.22",
+  "version": "0.1.23",
   "description": "CLI for digger.dev. The fastest way to deploy on aws.",
   "main": "index.js",
   "scripts": {
