@@ -52,7 +52,7 @@ async function main() {
     tag = tag.trim();
     // const tag = await fs.readFileSync("STABLE-VERSION", "utf8").trim();
     var versionUrl = 'http://digger-releases.s3-eu-west-1.amazonaws.com/STABLE-VERSION'
-    var destination=`${diggerdir}/dg${tag}`
+    var destination=`./digger`
     var executable=`${destination}/dg/dg`
     var symlink="/usr/local/bin/dg"
     var filename=`dg-${platform}-${tag}.zip`
@@ -82,8 +82,6 @@ async function main() {
         .pipe(unzipper.Extract({path: destination}))
         .on('close', function() {
             child_process.execSync(`chmod +x ${executable}`)
-            // console.log("creating symlink")
-            fs.symlinkSync(executable, symlink)        
         })
     
 }

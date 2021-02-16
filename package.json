@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "node install.js",
-    "postuninstall": "sh uninstall.sh"
+    "install": "node install.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/diggerhq/cli-npm.git"
+  },
+  "bin": {
+    "dg": "./digger/dg/dg"
   },
   "keywords": [
     "aws",
