@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "sh install.sh",
+    "install": "node install.js",
     "uninstall": "sh uninstall.sh"
   },
   "repository": {
@@ -24,5 +24,8 @@
     "url": "https://github.com/diggerhq/cli-npm/issues"
   },
   "homepage": "https://github.com/diggerhq/cli#readme",
-  "dependencies": {}
+  "dependencies": {
+    "download-file": "^0.1.5",
+    "unzipper": "^0.10.11"
+  }
 }
