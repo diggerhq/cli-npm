@@ -44,7 +44,7 @@ function readFileSync(file, options, callback) {
 async function main() {
     var homedir = require('os').homedir()
     diggerdir=`${homedir}/.digger`
-    child_process.execSync("mkdir -p diggerdir")
+    child_process.execSync(`mkdir -p ${diggerdir}`)
     platform=getPlatform()
     await downloadFile('http://digger-releases.s3-eu-west-1.amazonaws.com/STABLE-VERSION', {path: '.'}, function(err) {})
 
