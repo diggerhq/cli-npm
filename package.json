@@ -1,12 +1,12 @@
 {
   "name": "diggercli",
-  "version": "0.1.23",
+  "version": "0.1.24",
   "description": "CLI for digger.dev. The fastest way to deploy on aws.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "install": "node install.js",
-    "uninstall": "sh uninstall.sh"
+    "postuninstall": "sh uninstall.sh"
   },
   "repository": {
     "type": "git",
