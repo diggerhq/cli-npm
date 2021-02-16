@@ -9,7 +9,7 @@ function getPlatform() {
     if (platform == 'darwin') {
         return 'darwin';
     } else if (platform == 'linux') {
-        return 'debian'
+        return 'linux'
     } else { 
         console.error(`platform ${platform} not supported .. exiting`)
         process.exit()
@@ -43,7 +43,7 @@ function readFileSync(file, options, callback) {
 
 async function main() {
     var homedir = require('os').homedir()
-    diggerdir=`${homedir}/.digger`
+    var diggerdir=`${homedir}/.digger`
     child_process.execSync(`mkdir -p ${diggerdir}`)
     platform=getPlatform()
     await downloadFile('http://digger-releases.s3-eu-west-1.amazonaws.com/STABLE-VERSION', {path: '.'}, function(err) {})
