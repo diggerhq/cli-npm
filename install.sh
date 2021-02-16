@@ -43,41 +43,25 @@ need() {
     fi
 }
 
-force=false
-while test $# -gt 0; do
-    case $1 in
-        --crate)
-            crate=$2
-            shift
-            ;;
-        --force | -f)
-            force=true
-            ;;
-        --git)
-            git=$2
-            shift
-            ;;
-        --help | -h)
-            help
-            exit 0
-            ;;
-        --tag)
-            tag=$2
-            shift
-            ;;
-        --target)
-            target=$2
-            shift
-            ;;
-        --to)
-            dest=$2
-            shift
-            ;;
-        *)
-            ;;
-    esac
-    shift
-done
+get_platform() {
+    if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+            local platform="debian"
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+            local platform="darwin"
+    elif [[ "$OSTYPE" == "cygwin" ]]; then
+            say_err "Cygwin platform is not supported, abborting ..."
+    elif [[ "$OSTYPE" == "msys" ]]; then
+            # Lightweight shell and GNU utilities compiled for Windows (part of MinGW)
+            say_err "mysys / MinGW platform is not supported, abborting ..."
+    elif [[ "$OSTYPE" == "win32" ]]; then
+            say_err "windows platform is not supported, abborting ..."
+    elif [[ "$OSTYPE" == "freebsd"* ]]; then
+            say_err "Freebsd platform is not supported, abborting ..."
+    else
+            say_err "Unknwon platform and not supported, aborting ..."
+    fi   
+    echo $platform 
+}
 
 # Dependencies
 need basename
@@ -88,57 +72,29 @@ need mktemp
 need tar
 need cut
 need grep
+need unzip
 
 
 
-if [ -z $git ]; then
-    err 'must specify a git repository using `--git`. Example: `install.sh --git japaric/cross`'
-fi
+diggerdir=$HOME/.digger
+platform=`get_platform`
+tag=`curl -sk http://digger-releases.s3-eu-west-1.amazonaws.com/STABLE-VERSION`
+destination="$diggerdir/dg$tag"
+executable="$destination/dg/dg"
+symlink="/usr/local/bin/dg"
+filename="dg-$platform-$tag.zip"
+url="http://digger-releases.s3-eu-west-1.amazonaws.com/$platform/$filename"
 
-url="https://github.com/$git"
-say_err "GitHub repository: $url"
+say "removing old installations"
+rm -rf $destination
+rm -rf $symlink
 
-if [ -z $crate ]; then
-    crate=$(echo $git | cut -d'/' -f2)
-fi
+say "Downloading latest stable version of dg ($tag)"
+wget $url
 
-say_err "Crate: $crate"
+say "extrating zip file"
+unzip -q $filename -d $destination
+chmod +x $executable
 
-url="$url/releases"
-
-if [ -z $tag ]; then
-    tag=$(curl -s "$url/latest" | cut -d'"' -f2 | rev | cut -d'/' -f1 | rev)
-    say_err "Tag: latest ($tag)"
-else
-    say_err "Tag: $tag"
-fi
-
-if [ -z $target ]; then
-    target=$(rustc -Vv | grep host | cut -d' ' -f2)
-fi
-
-say_err "Target: $target"
-
-if [ -z $dest ]; then
-    dest="$HOME/.cargo/bin"
-fi
-
-say_err "Installing to: $dest"
-
-url="$url/download/$tag/$crate-$tag-$target.tar.gz"
-
-td=$(mktemp -d || mktemp -d -t tmp)
-curl -sL $url | tar -C $td -xz
-
-for f in $(ls $td); do
-    test -x $td/$f || continue
-
-    if [ -e "$dest/$f" ] && [ $force = false ]; then
-        err "$f already exists in $dest"
-    else
-        mkdir -p $dest
-        install -m 755 $td/$f $dest
-    fi
-done
-
-rm -rf $td
+say "creating symlink"
+ln -s $executable $symlink

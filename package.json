@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "npm run install",
-    "install": "node install.js"
-  },  
+    "install": "sh install.sh",
+    "uninstall": "sh uninstall.sh"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/diggerhq/cli-npm.git"
@@ -23,5 +23,6 @@
   "bugs": {
     "url": "https://github.com/diggerhq/cli-npm/issues"
   },
-  "homepage": "https://github.com/diggerhq/cli#readme"
+  "homepage": "https://github.com/diggerhq/cli#readme",
+  "dependencies": {}
 }
