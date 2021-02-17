@@ -25,7 +25,7 @@
   "bugs": {
     "url": "https://github.com/diggerhq/cli-npm/issues"
   },
-  "homepage": "https://github.com/diggerhq/cli#readme",
+  "homepage": "https://github.com/diggerhq/cli-npm#readme",
   "dependencies": {
     "download-file": "^0.1.5",
     "unzipper": "^0.10.11"
